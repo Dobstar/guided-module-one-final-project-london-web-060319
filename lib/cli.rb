@@ -54,7 +54,17 @@ class CommandLineInterface
         shop_options = CoffeeShop.all.map{|cs| cs.name if cs.street_id == target_street.id}.compact
         shop_answer = prompt.select "Please select which Coffee Shop you'd like to view:", shop_options
         chosen_shop = CoffeeShop.all.find{|c_shop| c_shop.name == shop_answer}
+
+        deets_of_coffee_shops(chosen_shop)
     end 
+
+    def deets_of_coffee_shops(chosen_shop)
+        shop_deets = CoffeeShop.find_by_location(chosen_shop.location)
+        puts " "
+        puts shop_deets.name
+        puts " "
+        puts shop_deets.location
+    end
 
 
     #def old_street_coffee_shops
