@@ -27,23 +27,77 @@ class CommandLineInterface
         
         
         answer = prompt.select "What would you like to do first?", "Find Your Local Coffee Shop", "Make A Review", "Reviews By You"
-    end 
+    
 
-    case answer
+        case answer
         when "Find Your Local Coffee Shop"
-            method
+            find_your_local_coffee_shop
         when "Make A Review"
-            method
+            make_a_review
         else "Reviews By You"
+            reviews_by_you
+        end 
+    end
+    
+    def find_your_local_coffee_shop
+        street_answer = prompt.select "Please select your location:", "Liverpool Street", "Moorgate", "Old Street"
+    
+
+    case street_answer
+    when "Liverpool Street"
+        liverpool_street_coffee_shops
+    when "Moorgate"
+        moorgate_street_coffee_shops
+    when
+        "Old Street"
+        old_street_coffee_shops
+    end 
+end
+
+    def liverpool_street_coffee_shops
+        liverpoool_street_answer = prompt.select "Your local coffee shops are:", "Beany Green", "The Good Yard", "Costa Coffee (Liverpool St Station)"
+    
+
+    case liverpool_street_answer
+    when "Beany Green"
+        method
+    when "The Good Yard"
+        method
+    when "Costa Coffee (Liverpool St Station)"
+        method
+    end 
+end
+
+    def moorgate_street_coffee_shops
+        moorgate_street_answer = prompt.select "Your local coffee shops are:", "Manon Cafe", "Ravello Cafe Co Ltd", "Wild & Wood Coffee"
+
+        case moorgate_street_answer 
+        when "Manon Cafe"
             method
+        when "Ravello Cafe Co Ltd"
+            method
+        when "Wild & Wood Coffee"
+            method
+        end 
     end 
     
-    def find_local_coffee_shop
+        def old_street_coffee_shops
+            old_street_answer = prompt.select "Your local coffee shops are:", "Shoreditch Grind", "Workshop Coffee at White Collar Factory", "Hermanos Colombian Coffee Roasters"
+            case old_street_answer
+            when "Shoreditch Grind"
+                method
+            when "Workshop Coffee at White Collar Factory"
+                method
+            when "Hermanos Colombian Coffee Roasters"
+                method
+            end  
+        end 
 
+    def make_a_review
+    end
+
+    def reviews_by_you
     end 
-
-    
-
     # def previous_user_reviews
     #     puts "Need a new coffee shop to chill? Or want to try a different brew?? We can help you with your decision, with loads of reviews at our fingertips!"
     #     puts "Please enter a coffee shop name:"
