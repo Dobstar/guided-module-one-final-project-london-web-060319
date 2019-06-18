@@ -7,19 +7,25 @@ class CommandLineInterface
         @current_user = nil 
     end
 
+    def new_user(f_name, l_name)
+        @current_user = User.new
+        @current_user.first_name = f_name
+        @current_user.last_name = l_name
+        @current_user.save
+        binding.pry
+    end
+
     def greet
         puts "Welcome to Brew Review"
-        prompt.ask('What is your name?', default: 'Anonymous')
-        puts "Hello,#{@current_user}I am Baristabot, I will be helping you on your coffee shop journey!"
-        binding.pry
-        0
-        promp.select("What would you like to do first?", %w(FindYourLocalCoffeeShop MakeAReview ReviewsByYou))
+        f_name = prompt.ask('What is your first name?', default: 'Anonymous')
+        l_name = prompt.ask('What is your last name?', default: 'Anonymous')
+        puts "Hello, #{f_name} #{l_name}. I am Baristabot, I will be helping you on your coffee shop journey!"
+        new_user(f_name, l_name)
+        
+        
+        prompt.select("What would you like to do first?", %w(FindYourLocalCoffeeShop MakeAReview ReviewsByYou))
     end 
-    def new_user
-        @current_user = User.new
-        @current_user.name = new_name
-        @current_user.save
-    end
+    
     
 
     # def previous_user_reviews
