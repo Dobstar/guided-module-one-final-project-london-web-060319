@@ -60,10 +60,14 @@ class CommandLineInterface
 
     def deets_of_coffee_shops(chosen_shop)
         shop_deets = CoffeeShop.find_by_location(chosen_shop.location)
+        #shop_deets2 = Review.find_by_review(chosen_shop.content)
         puts " "
         puts shop_deets.name
         puts " "
         puts shop_deets.location
+        #puts " "
+        #puts shop_deets2.content
+        binding.pry
     end
 
 
