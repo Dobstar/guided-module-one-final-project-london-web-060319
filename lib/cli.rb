@@ -1,20 +1,25 @@
 class CommandLineInterface
     attr_reader :prompt
     
-    @current_user = nil 
 
     def initialize
         @prompt = TTY::Prompt.new
+        @current_user = nil 
     end
 
     def greet
         puts "Welcome to Brew Review"
         prompt.ask('What is your name?', default: 'Anonymous')
-        puts "Hello,#{current_user}I am Baristabot, I will be helping you on your coffee shop journey!"
+        puts "Hello,#{@current_user}I am Baristabot, I will be helping you on your coffee shop journey!"
         binding.pry
         0
         promp.select("What would you like to do first?", %w(FindYourLocalCoffeeShop MakeAReview ReviewsByYou))
     end 
+    def new_user
+        @current_user = User.new
+        @current_user.name = new_name
+        @current_user.save
+    end
     
 
     # def previous_user_reviews
