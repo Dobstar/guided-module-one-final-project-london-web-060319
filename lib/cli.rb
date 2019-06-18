@@ -12,7 +12,6 @@ class CommandLineInterface
         @current_user.first_name = f_name
         @current_user.last_name = l_name
         @current_user.save
-        binding.pry
     end
 
     def greet
