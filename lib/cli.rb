@@ -43,28 +43,31 @@ class CommandLineInterface
         street_answer = prompt.select "Please select your location:", "Liverpool Street", "Moorgate", "Old Street"
     
 
-    case street_answer
-    when "Liverpool Street"
-        liverpool_street_coffee_shops
-    when "Moorgate"
-        moorgate_street_coffee_shops
-    when
-        "Old Street"
-        old_street_coffee_shops
-    end 
-end
+        case street_answer
+        when "Liverpool Street"
+            liverpool_street_coffee_shops
+        when "Moorgate"
+            moorgate_street_coffee_shops
+        when
+            "Old Street"
+            old_street_coffee_shops
+        end 
+    end
 
     def liverpool_street_coffee_shops
-        liverpoool_street_answer = prompt.select "Your local coffee shops are:", "Beany Green", "The Good Yard", "Costa Coffee (Liverpool St Station)"
+        liverpool_street_answer = prompt.select "Your local coffee shops are:", Street.find_by(name: "Liverpool Street").coffee_shops.map{|c| c.name}
+        # "Beany Green", "The Good Yard", "Costa Coffee (Liverpool St Station)"
     
-
     case liverpool_street_answer
     when "Beany Green"
-        CoffeeShop.find_by(:address "")
-    when "The Good Yard"
-        method
-    when "Costa Coffee (Liverpool St Station)"
-        method
+       beany_green = CoffeeShop.find_by(location: "41 Broadgate Cir, London, EC2M 2QS")
+       Review.all.select{|rv| rv.coffee_shop_id == beany_green.id}
+
+        # Review.find_by(coffee_shop_id: , content: )
+    # when "The Good Yard"
+    #     CoffeeShop.find_by(:address "19, The Arcade, 19 Liverpool Street, London, EC2M 7PN")
+    # when "Costa Coffee (Liverpool St Station)"
+    #    CoffeeShop.find_by(address: "18 Liverpool Street, London, EC2M 7PD")
     end 
 end
 
