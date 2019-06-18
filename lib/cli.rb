@@ -60,7 +60,7 @@ end
 
     case liverpool_street_answer
     when "Beany Green"
-        method
+        CoffeeShop.find_by(:address "")
     when "The Good Yard"
         method
     when "Costa Coffee (Liverpool St Station)"
