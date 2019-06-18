@@ -22,7 +22,7 @@ class CommandLineInterface
         new_user(f_name, l_name)
         
         
-        prompt.select("What would you like to do first?", %w(FindYourLocalCoffeeShop MakeAReview ReviewsByYou))
+        prompt.select "What would you like to do first?", "Find Your Local Coffee Shop", "Make A Review", "Reviews By You"
     end 
     
     
