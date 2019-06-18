@@ -13,8 +13,9 @@
 ActiveRecord::Schema.define(version: 20190617125014) do
 
   create_table "coffee_shops", force: :cascade do |t|
-    t.string "name"
-    t.string "location"
+    t.string  "name"
+    t.string  "location"
+    t.integer "street_id"
   end
 
   create_table "reviews", force: :cascade do |t|

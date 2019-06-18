@@ -1,10 +1,12 @@
 class CommandLineInterface
-    attr_reader :prompt
+    attr_reader :prompt 
+    attr_accessor :coffee_shop
     
 
     def initialize
         @prompt = TTY::Prompt.new
         @current_user = nil 
+        @coffee_shop = coffee_shop
     end
 
     def new_user(f_name, l_name)
@@ -25,6 +27,10 @@ class CommandLineInterface
         prompt.select "What would you like to do first?", "Find Your Local Coffee Shop", "Make A Review", "Reviews By You"
     end 
     
+    def find_local_coffee_shop
+        
+    end 
+
     
 
     # def previous_user_reviews
