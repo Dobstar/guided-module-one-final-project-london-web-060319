@@ -31,7 +31,7 @@ class CommandLineInterface
 
         case answer
         when "Find Your Local Coffee Shop"
-            find_your_local_coffee_shop
+            street_locations_of_cs
         when "Make A Review"
             make_a_review
         else "Reviews By You"
@@ -39,68 +39,33 @@ class CommandLineInterface
         end 
     end
     
-    def find_your_local_coffee_shop
-        street_answer = prompt.select "Please select your location:", "Liverpool Street", "Moorgate", "Old Street"
-    
-
-        case street_answer
-        when "Liverpool Street"
-            liverpool_street_coffee_shops
-        when "Moorgate"
-            moorgate_street_coffee_shops
-        when
-            "Old Street"
-            old_street_coffee_shops
-        end 
+    def street_locations_of_cs
+        options = Street.all.map{|st| st.name}
+        #options will iterate through and provide the street names available. By not hard coding it, it also means that if any street names were added it will be added to the end of the list (which is provided in the prompt below)
+        street_answer = prompt.select "Please select your location:", options
+        #options shows the street names.
+        target_street = Street.all.find{|strt| strt.name==street_answer}
+        #Iterating through the Street class, finding the street name that is == to the street answer (which is the options that were provided. ie. the street names found earlier.) 
+        #So when selecting one of the options on the list shown on the cli.. it will then give you the information of that street. ie the coffee shops of that street.
+        coffee_shops_per_street(target_street)
     end
 
-    def liverpool_street_coffee_shops
-        liverpool_street_answer = prompt.select "Your local coffee shops are:", Street.find_by(name: "Liverpool Street").coffee_shops.map{|c| c.name}
-        # "Beany Green", "The Good Yard", "Costa Coffee (Liverpool St Station)"
-    
-    case liverpool_street_answer
-    when "Beany Green"
-       beany_green = CoffeeShop.find_by(location: "41 Broadgate Cir, London, EC2M 2QS")
-       Review.all.select{|rv| rv.coffee_shop_id == beany_green.id}
-
-        # Review.find_by(coffee_shop_id: , content: )
-    # when "The Good Yard"
-    #     CoffeeShop.find_by(:address "19, The Arcade, 19 Liverpool Street, London, EC2M 7PN")
-    # when "Costa Coffee (Liverpool St Station)"
-    #    CoffeeShop.find_by(address: "18 Liverpool Street, London, EC2M 7PD")
+    def coffee_shops_per_street(target_street)
+        shop_options = CoffeeShop.all.map{|cs| cs.name if cs.street_id == target_street.id}.compact
+        shop_answer = prompt.select "Please select which Coffee Shop you'd like to view:", shop_options
+        chosen_shop = CoffeeShop.all.find{|c_shop| c_shop.name == shop_answer}
     end 
-end
 
-    def moorgate_street_coffee_shops
-        moorgate_street_answer = prompt.select "Your local coffee shops are:", "Manon Cafe", "Ravello Cafe Co Ltd", "Wild & Wood Coffee"
 
-        case moorgate_street_answer 
-        when "Manon Cafe"
-            method
-        when "Ravello Cafe Co Ltd"
-            method
-        when "Wild & Wood Coffee"
-            method
-        end 
-    end 
-    
-        def old_street_coffee_shops
-            old_street_answer = prompt.select "Your local coffee shops are:", "Shoreditch Grind", "Workshop Coffee at White Collar Factory", "Hermanos Colombian Coffee Roasters"
-            case old_street_answer
-            when "Shoreditch Grind"
-                method
-            when "Workshop Coffee at White Collar Factory"
-                method
-            when "Hermanos Colombian Coffee Roasters"
-                method
-            end  
-        end 
+    #def old_street_coffee_shops
+       # old_street_answer = prompt.select "Your local coffee shops are:", 
+    #end 
 
-    def make_a_review
-    end
+    #def make_a_review
+    #end
 
-    def reviews_by_you
-    end 
+    #def reviews_by_you
+    #end 
     # def previous_user_reviews
     #     puts "Need a new coffee shop to chill? Or want to try a different brew?? We can help you with your decision, with loads of reviews at our fingertips!"
     #     puts "Please enter a coffee shop name:"
