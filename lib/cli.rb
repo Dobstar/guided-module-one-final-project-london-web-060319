@@ -61,12 +61,14 @@ class CommandLineInterface
     def deets_of_coffee_shops(chosen_shop)
         shop_deets = CoffeeShop.find_by_location(chosen_shop.location)
         shop_rv = Review.all.select{|rv| rv.content if rv.coffee_shop_id == chosen_shop.id}
+        #shop_content = Review.all.find{|cs_rv| cs_rv.content == shop_rv}
         puts " "
         puts shop_deets.name
         puts " "
         puts shop_deets.location
         puts " "
         puts shop_rv
+        puts #shop_content 
         binding.pry
     end
 
