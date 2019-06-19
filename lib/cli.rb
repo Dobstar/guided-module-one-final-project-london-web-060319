@@ -21,6 +21,7 @@ class CommandLineInterface
     end 
 
     def main_menu
+
         answer = prompt.select "What would you like to do first?", "Find Your Local Coffee Shop", "Make A Review", "Reviews By You", "Exit"
     
 
@@ -96,6 +97,7 @@ class CommandLineInterface
         # puts shop_rv[0].star_rating
 
     def make_a_review
+        
         street_options = Street.all.map{|st| st.name}
         response = prompt.select "Thank you for taking the time to write a review. Please select from the following locations:", street_options
         selected_location = Street.all.find{|strt| strt.name==response}
@@ -116,14 +118,14 @@ class CommandLineInterface
         review_stars = prompt.ask("How many stars would you like to put between 1-5?")
         new_review = Review.create(:content=>"#{review_content}", :star_rating=>"#{review_stars}", :user_id=>"#{@current_user.id}", :coffee_shop_id=>"#{a_coffee_shop.id}")
         prompt.ok("Thanks for your feedback! You will now be sent back to the Main Menu now.")
-        sleep 3
+        sleep 2
         main_menu
     end
 
     
     def reviews_by_you
-         all_rev = @current_user.all_reviews_content
-        @current_user.reviews.each do |review|
+            all_rev = Review.where(user_id: @current_user.id).map {|rev| rev.content}
+            @current_user.reviews.each do |review|
             puts review.coffee_shop.name
             puts review.content
             puts review.star_rating
@@ -139,7 +141,7 @@ class CommandLineInterface
 
     def option_drop_downs(all_rev)
         selected_rev = prompt.select("Pick one review", [all_rev])
-        review_option = prompt.select "Would you like to edit or delete a review?",["Edit", "Delete"]
+        review_option = prompt.select "Would you like to edit or delete a review?",["Edit", "Delete", "Go Back"]
         review = Review.find_by(content: selected_rev)
         
         selected_rating=@current_user.all_star_ratings
@@ -157,6 +159,8 @@ class CommandLineInterface
             Review.destroy(review.id)
             prompt.ok("Review is now deleted. You are now being sent back to the Main Menu")
             sleep 3
+            main_menu
+        else review_option == "Go Back"
             main_menu
         end 
     end 
