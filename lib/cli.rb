@@ -99,14 +99,17 @@ class CommandLineInterface
             puts review.content
             puts review.star_rating
         end
+
+        all_rev = @current_user.all_reviews_content
+        selected_rev = prompt.select("Pick one review", [all_rev])
+        review_option = prompt.select "Would you like to edit or delete a review?",["Edit", "Delete"]
+        review = Review.find_by(content: selected_rev)
+
+        if review_option == "Edit"
+            review_content = prompt.ask "Please enter your new review:"
+            review.update(content: review_content)
+        elsif review_option == "Delete"
+            Review.destroy(review.id)
+        end 
     end 
-
-
-
-
-    # def previous_user_reviews
-    #     puts "Need a new coffee shop to chill? Or want to try a different brew?? We can help you with your decision, with loads of reviews at our fingertips!"
-    #     puts "Please enter a coffee shop name:"
-    #     #CoffeeShop.find_by(name: coffee_shop)
-    # end 
 end 
