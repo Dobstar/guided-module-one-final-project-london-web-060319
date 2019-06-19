@@ -12,12 +12,9 @@ class CommandLineInterface
     end
 
     def new_user(f_name, l_name)
-        @current_user = User.new
-        @current_user.first_name = f_name
-        @current_user.last_name = l_name
-        @current_user.save
-    end
+        @current_user = User.find_or_create_by(first_name: f_name, last_name: l_name)
 
+    end
     def greet
         puts "Welcome to Brew Review"
         f_name = prompt.ask('What is your first name?', default: 'Anonymous')
@@ -68,13 +65,40 @@ class CommandLineInterface
         puts shop_deets.location
         puts " "
         puts shop_rv[0].content
+        puts " "
+        puts shop_rv[0].star_rating
     end
 
-    #def make_a_review
-    #end
+    def make_a_review
+        street_options = Street.all.map{|st| st.name}
+        response = prompt.select "Thank you for taking the time to write a review. Please select from the following locations:", street_options
+        selected_location = Street.all.find{|strt| strt.name==response}
+        which_cs(selected_location)
+    end
+    def which_cs(selected_location)
+        cs_options = CoffeeShop.all.map{|cs| cs.name if cs.street_id == selected_location.id}.compact
+        cs_answer = prompt.select "Please select which Coffee Shop you'd like to write a review for:", cs_options
+        a_coffee_shop = CoffeeShop.all.find{|c_shop| c_shop.name == cs_answer}
+        create_review(a_coffee_shop)
+    end
+    def create_review(a_coffee_shop)
+        review_content = prompt.ask('What would you like to say?')
+        review_stars = prompt.ask("How many stars would you like to put between 1-5?")
+        
+    new_review = Review.create(:content=>"#{review_content}", :star_rating=>"#{review_stars}", :user_id=>"#{@current_user.id}", :coffee_shop_id=>"#{a_coffee_shop.id}")
+    end
 
-    #def reviews_by_you
-    #end 
+    def reviews_by_you
+        @current_user.reviews.each do |review|
+            puts review.coffee_shop.name
+            puts review.content
+            puts review.star_rating
+        end
+    end 
+
+
+
+
     # def previous_user_reviews
     #     puts "Need a new coffee shop to chill? Or want to try a different brew?? We can help you with your decision, with loads of reviews at our fingertips!"
     #     puts "Please enter a coffee shop name:"
