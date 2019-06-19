@@ -9,4 +9,8 @@ class User < ActiveRecord::Base
     def all_reviews_content
         self.reviews.collect{|review| review.content}
     end 
+
+    def all_star_ratings
+        self.reviews.collect{|rating| rating.star_rating}
+    end 
 end 

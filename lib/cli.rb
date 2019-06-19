@@ -21,9 +21,10 @@ class CommandLineInterface
         l_name = prompt.ask('What is your last name?', default: 'Anonymous')
         puts "Hello, #{f_name} #{l_name}. I am Baristabot, I will be helping you on your coffee shop journey!"
         new_user(f_name, l_name)
-        
-        
-        answer = prompt.select "What would you like to do first?", "Find Your Local Coffee Shop", "Make A Review", "Reviews By You"
+        main_menu
+    end 
+        def main_menu
+        answer = prompt.select "What would you like to do first?", "Find Your Local Coffee Shop", "Make A Review", "Reviews By You", "Exit"
     
 
         case answer
@@ -31,8 +32,10 @@ class CommandLineInterface
             street_locations_of_cs
         when "Make A Review"
             make_a_review
-        else "Reviews By You"
+        when "Reviews By You"
             reviews_by_you
+        else "Exit"
+            exit
         end 
     end
     
@@ -89,8 +92,9 @@ class CommandLineInterface
     def create_review(a_coffee_shop)
         review_content = prompt.ask('What would you like to say?')
         review_stars = prompt.ask("How many stars would you like to put between 1-5?")
-        
-    new_review = Review.create(:content=>"#{review_content}", :star_rating=>"#{review_stars}", :user_id=>"#{@current_user.id}", :coffee_shop_id=>"#{a_coffee_shop.id}")
+        new_review = Review.create(:content=>"#{review_content}", :star_rating=>"#{review_stars}", :user_id=>"#{@current_user.id}", :coffee_shop_id=>"#{a_coffee_shop.id}")
+        prompt.ok("Thanks for your feedback!")
+        main_menu
     end
 
     def reviews_by_you
@@ -101,13 +105,24 @@ class CommandLineInterface
         end
 
         all_rev = @current_user.all_reviews_content
+        if all_rev.count > 0 
+            selected_rev
+         else
+            puts "You have 0 Reviews yet :-( !"
+            sleep 2
+            main_menu
+         end 
         selected_rev = prompt.select("Pick one review", [all_rev])
         review_option = prompt.select "Would you like to edit or delete a review?",["Edit", "Delete"]
         review = Review.find_by(content: selected_rev)
-
+        
+         selected_rating=@current_user.all_star_ratings
+         rating = Review.find_by(star_rating: selected_rating)
         if review_option == "Edit"
             review_content = prompt.ask "Please enter your new review:"
             review.update(content: review_content)
+            review_star_rating = prompt.ask "How many stars would you like to give this coffee shop between 1-5?"
+            rating.update(star_rating: review_star_rating)
         elsif review_option == "Delete"
             Review.destroy(review.id)
         end 
