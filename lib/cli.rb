@@ -49,16 +49,21 @@ class CommandLineInterface
 
     def coffee_shops_per_street(target_street)
         shop_options = CoffeeShop.all.map{|cs| cs.name if cs.street_id == target_street.id}.compact
+        #shop options = CoffeeShop.find_by_name
         shop_answer = prompt.select "Please select which Coffee Shop you'd like to view:", shop_options
         chosen_shop = CoffeeShop.all.find{|c_shop| c_shop.name == shop_answer}
-
+        #chosen_shop = CoffeeShop.find_by_name(chosen.name)
         deets_of_coffee_shops(chosen_shop)
     end 
 
     def deets_of_coffee_shops(chosen_shop)
         shop_deets = CoffeeShop.find_by_location(chosen_shop.location)
         shop_rv = Review.all.select{|rv| rv.content if rv.coffee_shop_id == chosen_shop.id}
-        #shop_content = Review.all.find{|cs_rv| cs_rv.content == shop_rv}
+        #chosen_shop.reviews.each do |review|
+         #@current_user.reviews.each do |review|
+         #puts review.coffee_shop.name
+         #puts review.content
+         #puts review.star_rating
         puts " "
         puts shop_deets.name
         puts " "
