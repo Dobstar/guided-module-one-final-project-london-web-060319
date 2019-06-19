@@ -17,7 +17,6 @@ ActiveRecord::Schema.define(version: 20190618133809) do
     t.string  "location"
     t.integer "street_id"
   end
-
   create_table "reviews", force: :cascade do |t|
     t.string  "content"
     t.string  "star_rating"

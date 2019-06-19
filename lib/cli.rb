@@ -67,15 +67,8 @@ class CommandLineInterface
         puts " "
         puts shop_deets.location
         puts " "
-        puts shop_rv
-        puts #shop_content 
-        binding.pry
+        puts shop_rv[0].content
     end
-
-
-    #def old_street_coffee_shops
-       # old_street_answer = prompt.select "Your local coffee shops are:", 
-    #end 
 
     #def make_a_review
     #end
