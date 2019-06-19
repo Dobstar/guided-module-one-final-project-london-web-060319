@@ -59,10 +59,27 @@ class CommandLineInterface
     def deets_of_coffee_shops(chosen_shop)
         shop_deets = CoffeeShop.find_by_location(chosen_shop.location)
         puts shop_deets.name
+        puts "--------------------------------------------"
         puts shop_deets.location
+        puts ""
+        puts "*******************************************"
+        puts ""
         shop_rv = Review.all.select{|rv| rv.coffee_shop_id == chosen_shop.id}
         puts shop_rv[0].content
-        puts shop_rv[0].star_rating
+        puts "-------------------------------------------"
+        puts "Star Rating: #{shop_rv[0].star_rating}/5"
+        puts "-------------------------------------------"
+
+        
+         go_back = prompt.select "You may now, go back to Main Menu or Exit:","Main Menu", "Exit"
+        case go_back
+        when "Main Menu"
+            main_menu
+        else "Exit"
+            exit
+        end
+       
+    
         # chosen_shop.reviews.each do |review|
         #  @current_user.reviews.each do |review|
         #  puts review.coffee_shop.name
@@ -98,7 +115,7 @@ class CommandLineInterface
         review_content = prompt.ask('What would you like to say?')
         review_stars = prompt.ask("How many stars would you like to put between 1-5?")
         new_review = Review.create(:content=>"#{review_content}", :star_rating=>"#{review_stars}", :user_id=>"#{@current_user.id}", :coffee_shop_id=>"#{a_coffee_shop.id}")
-        prompt.ok("Thanks for your feedback! You will be sent back to the Main menu now.")
+        prompt.ok("Thanks for your feedback! You will now be sent back to the Main Menu now.")
         sleep 3
         main_menu
     end
@@ -112,7 +129,7 @@ class CommandLineInterface
             puts review.star_rating
         end
         if all_rev.count > 0 
-            option_drop_downs
+            option_drop_downs(all_rev)
         else
             puts "You have 0 Reviews yet :-( !"
             sleep 3
@@ -120,7 +137,7 @@ class CommandLineInterface
         end 
     end 
 
-    def option_drop_downs
+    def option_drop_downs(all_rev)
         selected_rev = prompt.select("Pick one review", [all_rev])
         review_option = prompt.select "Would you like to edit or delete a review?",["Edit", "Delete"]
         review = Review.find_by(content: selected_rev)
@@ -133,8 +150,14 @@ class CommandLineInterface
             review.update(content: review_content)
             review_star_rating = prompt.ask "How many stars would you like to give this coffee shop between 1-5?"
             rating.update(star_rating: review_star_rating)
+            prompt.ok("Thats a great review! Thanks for your feedback. You will now be sent back to the Main Menu.")
+            sleep 3
+            main_menu
         elsif review_option == "Delete"
             Review.destroy(review.id)
+            prompt.ok("Review is now deleted. You are now being sent back to the Main Menu")
+            sleep 3
+            main_menu
         end 
     end 
 end 
