@@ -53,7 +53,7 @@ class CommandLineInterface
         #shop options = CoffeeShop.find_by_name
         shop_answer = prompt.select "Please select which Coffee Shop you'd like to view:", shop_options
         chosen_shop = CoffeeShop.all.find{|c_shop| c_shop.name == shop_answer}
-        #chosen_shop = CoffeeShop.find_by_name(chosen.name)
+        #chosen_shop = CoffeeShop.find_by_name(name: name)
         deets_of_coffee_shops(chosen_shop)
     end 
 
@@ -89,12 +89,7 @@ class CommandLineInterface
         #  end 
     
     end 
-        # puts shop_deets.name
-        # puts shop_deets.location
-        # puts " "
-        # puts shop_rv[0].content
-        # puts " "
-        # puts shop_rv[0].star_rating
+        
 
     def make_a_review
         
