@@ -79,22 +79,12 @@ class CommandLineInterface
         else "Exit"
             exit
         end
-       
-    
-        # chosen_shop.reviews.each do |review|
-        #  @current_user.reviews.each do |review|
-        #  puts review.coffee_shop.name
-        #  puts review.content
-        #  puts review.star_rating
-        #  end 
-    
     end 
         
 
     def make_a_review
-        
         street_options = Street.all.map{|st| st.name}
-        response = prompt.select "Thank you for taking the time to write a review. Please select from the following locations:", street_options
+        response = prompt.select "Thank you for taking the time to write a review. Please select from the following locations:",street_options
         selected_location = Street.all.find{|strt| strt.name==response}
         which_cs(selected_location)
     end
@@ -117,14 +107,14 @@ class CommandLineInterface
         main_menu
     end
 
-    
+   
     def reviews_by_you
-            all_rev = Review.where(user_id: @current_user.id).map {|rev| rev.content}
-            @current_user.reviews.each do |review|
+         all_rev = Review.where(user_id: @current_user.id).map {|rev| rev.content}
+         @current_user.reviews.each do |review|
             puts review.coffee_shop.name
             puts review.content
             puts review.star_rating
-        end
+        end 
         if all_rev.count > 0 
             option_drop_downs(all_rev)
         else
@@ -152,6 +142,7 @@ class CommandLineInterface
             main_menu
         elsif review_option == "Delete"
             Review.destroy(review.id)
+            @current_user = User.find(@current_user.id)
             prompt.ok("Review is now deleted. You are now being sent back to the Main Menu")
             sleep 3
             main_menu
