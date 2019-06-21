@@ -1,10 +1,16 @@
 class CommandLineInterface
-    attr_reader :prompt 
+    attr_reader :prompt, :font, :pastel
     
     def initialize
         @prompt = TTY::Prompt.new
+        @font = TTY::Font.new(:doom)
+        @pastel = Pastel.new
         @current_user = nil 
     end
+    
+    def title
+        puts pastel.bright_yellow(font.write("Brew  Review", letter_spacing: 2))
+    end 
 
     def new_user(f_name, l_name)
         @current_user = User.find_or_create_by(first_name: f_name, last_name: l_name)
@@ -43,8 +49,6 @@ class CommandLineInterface
         street_answer = prompt.select "Please select your location:", options
         #options shows the street names.
         target_street = Street.all.find{|strt| strt.name==street_answer}
-        binding.pry
-        0
         #Iterating through the Street class, finding the street name that is == to the street answer (which is the options that were provided. ie. the street names found earlier.) 
         #So when selecting one of the options on the list shown on the cli.. it will then give you the information of that street. ie the coffee shops of that street.
         coffee_shops_per_street(target_street)
