@@ -43,6 +43,8 @@ class CommandLineInterface
         street_answer = prompt.select "Please select your location:", options
         #options shows the street names.
         target_street = Street.all.find{|strt| strt.name==street_answer}
+        binding.pry
+        0
         #Iterating through the Street class, finding the street name that is == to the street answer (which is the options that were provided. ie. the street names found earlier.) 
         #So when selecting one of the options on the list shown on the cli.. it will then give you the information of that street. ie the coffee shops of that street.
         coffee_shops_per_street(target_street)
@@ -66,13 +68,12 @@ class CommandLineInterface
         puts "*******************************************"
         puts ""
         shop_rv = Review.all.select{|rv| rv.coffee_shop_id == chosen_shop.id}
-        puts shop_rv[0].content
         puts "-------------------------------------------"
         puts "Star Rating: #{shop_rv[0].star_rating}/5"
         puts "-------------------------------------------"
 
         
-         go_back = prompt.select "You may now, go back to Main Menu or Exit:","Main Menu", "Exit"
+        go_back = prompt.select "You may now, go back to Main Menu or Exit:","Main Menu", "Exit"
         case go_back
         when "Main Menu"
             main_menu
